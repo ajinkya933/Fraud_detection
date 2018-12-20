@@ -85,7 +85,6 @@ genuine CASH_OUT from this account occured earlier at step = {}'.format(\
 dfNotFraud.loc[(dfNotFraud.type == 'CASH_OUT') & (dfNotFraud.nameOrig == \
                            'C423543548')].step.values)) # 185
 
-print('#####################################################################')
 
 #####################################################################
 #     From the data analysis above
@@ -128,9 +127,12 @@ newBalanceDest\' = 0 although the transacted \'amount\' is non-zero is: {}'.\
 format(len(XnonFraud.loc[(XnonFraud.oldBalanceDest == 0) & \
 (XnonFraud.newBalanceDest == 0) & (XnonFraud.amount)]) / (1.0 * len(XnonFraud))))
 
+#####################################################################
 # The destination account balances being zero is a strong indicator of fraud.
 # Instead, below we replace the value of 0 with -1 which will be more useful to
 #  a suitable machine-learning (ML) algorithm detecting fraud.
+#####################################################################
+
 
 X.loc[(X.oldBalanceDest == 0) & (X.newBalanceDest == 0) & (X.amount != 0), \
       ['oldBalanceDest', 'newBalanceDest']] = - 1
@@ -158,12 +160,14 @@ clf = XGBClassifier(max_depth = 3, scale_pos_weight = weights, \
                 n_jobs = 4)
 
 
-print('skew = {}'.format( len(Xfraud) / float(len(X)) ))
 
+#####################################################################
 #To deal with the large skew in the data, we chose an appropriate metric
 # and used an ML algorithm based on an ensemble of decision trees which
 # works best with strongly imbalanced classes.
+#####################################################################
 
+print('skew = {}'.format( len(Xfraud) / float(len(X)) ))
 
 probabilities = clf.fit(trainX, trainY).predict_proba(testX)
 print('AUPRC = {}'.format(average_precision_score(testY, \
