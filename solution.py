@@ -173,8 +173,10 @@ probabilities = clf.fit(trainX, trainY).predict_proba(testX)
 print('AUPRC = {}'.format(average_precision_score(testY, \
                                               probabilities[:, 1])))
 
-
+#####################################################################
 # Figuring out the important features of this model
+#####################################################################
+
 
 fig = plt.figure(figsize=(14, 9))
 ax = fig.add_subplot(111)
