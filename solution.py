@@ -197,6 +197,12 @@ plt.show()
 
 #to_graphviz(clf)
 
+#####################################################################
+# The model has a degree of bias and is slighly underfit.
+# Other way to improve the performance of the model still further is to 
+# increase the max_depth parameter of the XGBClassifier 
+#####################################################################
+
 trainSizes, trainScores, crossValScores = learning_curve(\
 XGBClassifier(max_depth = 3, scale_pos_weight = weights, n_jobs = 4), trainX,\
                                          trainY, scoring = 'average_precision')
